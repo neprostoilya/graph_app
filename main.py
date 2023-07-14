@@ -14,7 +14,7 @@ root.title("App")
 root.geometry("680x500")
 root.configure(bg="#FBFCFC")
 
-def get_list_xticks(values, list_dates):
+def get_list_xticks(values: list, list_dates: list):
     """Формула расположения меток на графике"""
     value = int(len(values) / (len(list_dates)-1))
     count, list_xticks, result = 1, [], 0
@@ -83,10 +83,6 @@ def get_list_datatime(datetime_1: datetime, datetime_2: datetime) -> list:
         list_datetime = pd.date_range(start=datetime_1, end=datetime_2, freq='D').tolist()
     if hours >= 12:
         list_datetime = pd.date_range(start=datetime_1, end=datetime_2, freq='3H').tolist()
-    elif hours >= 3:
-        list_datetime = pd.date_range(start=datetime_1, end=datetime_2, freq='H').tolist()
-    elif hours == 0:
-        list_datetime = pd.date_range(start=datetime_1, end=datetime_2, freq='15min').tolist()
     else:
         list_datetime = pd.date_range(start=datetime_1, end=datetime_2, freq='H').tolist()
     if hours >= 24:
