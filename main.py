@@ -29,7 +29,7 @@ def get_list_xticks(values: list, list_dates: list):
 def reader():
     """Подключение к csv файлу"""
     return pd.read_csv(
-        'C:\HDLogs\Data_log_10.csv', 
+        'C:\Name\name_csv.csv', 
         delimiter=';',
         usecols=['VarValue', 'TimeString']
     )
@@ -129,7 +129,6 @@ def create_graph():
         show_error() # Вызываем оповещение о ошибке
     else:
         values = get_csv(datetime_1, datetime_2) # Получаем данные из csv файла по дате и времени
-        print(values)
         list_datatime = get_list_datatime(datetime_1, datetime_2) # Получаем даты и время в виде списка
         graph(values, list_datatime, datetime_1, datetime_2) # Создание графика 
         return str(data_time_1), str(data_time_2)
@@ -144,7 +143,7 @@ def button_save():
     data_time_1, data_time_2 = create_graph()
     data_time_1 = change_datetime(data_time_1)
     data_time_2 = change_datetime(data_time_2)
-    plt.savefig(f'C:\DATA\{data_time_1}_{data_time_2}.pdf') # Указываем куда сохранять pdf файл
+    plt.savefig(f'C:\Name\{data_time_1}_{data_time_2}.pdf') # Указываем куда сохранять pdf файл
 
 
 # Создание загаловков
