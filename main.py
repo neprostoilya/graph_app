@@ -5,13 +5,12 @@ import matplotlib.pyplot as plt
 from datetime import datetime
 import tkinter
 from tkinter.messagebox import showerror
-import os
 from matplotlib.backends.backend_pdf import PdfPages
 
 # Создаем окно программы
 root = tkinter.Tk()
 root.title("App") 
-root.geometry("680x500")
+root.geometry("480x300")
 root.configure(bg="#FBFCFC")
 
 def get_list_xticks(values: list, list_dates: list):
@@ -29,7 +28,7 @@ def get_list_xticks(values: list, list_dates: list):
 def reader():
     """Подключение к csv файлу"""
     return pd.read_csv(
-        'C:\Name\name_csv.csv', 
+        'C:\HDLogs\Data_log_10.csv', 
         delimiter=';',
         usecols=['VarValue', 'TimeString']
     )
@@ -79,16 +78,27 @@ def change_datetime(datetime: str) -> str:
 def get_list_datatime(datetime_1: datetime, datetime_2: datetime) -> list:
     """Создание списка дат и времени"""
     hours = int((datetime_2 - datetime_1).seconds / 3600) # Узнаем сколько часов
-    if hours >= 24:
-        list_datetime = pd.date_range(start=datetime_1, end=datetime_2, freq='D').tolist()
+    check = False
     if hours >= 12:
+        list_datetime = pd.date_range(start=datetime_1, end=datetime_2, freq='6H').tolist()
+    elif hours >= 6:
         list_datetime = pd.date_range(start=datetime_1, end=datetime_2, freq='3H').tolist()
-    else:
+    elif hours >= 1:
         list_datetime = pd.date_range(start=datetime_1, end=datetime_2, freq='H').tolist()
-    if hours >= 24:
-        list_dates = [str(_).split()[0] for _ in list_datetime]
+    elif hours == 0:
+        if datetime_1.date() == datetime_2.date():
+            list_datetime = pd.date_range(start=datetime_1, end=datetime_2, freq='15min').tolist()
+        else:
+            list_datetime = pd.date_range(start=datetime_1, end=datetime_2, freq='D').tolist()
+            check = True
     else:
+        list_datetime = pd.date_range(start=datetime_1, end=datetime_2, freq='6H').tolist()
+
+
+    if check != True:
         list_dates = [str(_).split()[1] for _ in list_datetime]
+    else:
+        list_dates = [str(_).split()[0] for _ in list_datetime]
     return list_dates
 
 def graph(values: list, list_datatime: list,
@@ -131,7 +141,7 @@ def create_graph():
         values = get_csv(datetime_1, datetime_2) # Получаем данные из csv файла по дате и времени
         list_datatime = get_list_datatime(datetime_1, datetime_2) # Получаем даты и время в виде списка
         graph(values, list_datatime, datetime_1, datetime_2) # Создание графика 
-        return str(data_time_1), str(data_time_2)
+        return str(data_time_1), str(data_time_2)   
         
 def button_get():
     """Кнопка Вывода"""
@@ -143,7 +153,7 @@ def button_save():
     data_time_1, data_time_2 = create_graph()
     data_time_1 = change_datetime(data_time_1)
     data_time_2 = change_datetime(data_time_2)
-    plt.savefig(f'C:\Name\{data_time_1}_{data_time_2}.pdf') # Указываем куда сохранять pdf файл
+    plt.savefig(f'C:\DATA\{data_time_1}_{data_time_2}.pdf') # Указываем куда сохранять pdf файл
 
 
 # Создание загаловков
@@ -185,7 +195,7 @@ lbl_time_2 = tkinter.Label(text="Час")
 
 # Создание кнопок
 btn = tkinter.Button(
-    text="Вывод",
+    text="  Вывод  ",
     bg="#000000",
     fg="#FFFFFF",
     font=('Shentox ', 13),
@@ -193,7 +203,7 @@ btn = tkinter.Button(
 )
 
 btn_2 = tkinter.Button(
-    text="Печать",
+    text="Сохранить",
     bg="#000000",
     fg="#FFFFFF",
     font=('Shentox ', 13),
@@ -201,33 +211,32 @@ btn_2 = tkinter.Button(
 )
 
 # Загаловки
-label_1.place(x=150, y=60)
-label_2.place(x=400, y=60)
+label_1.place(x=70, y=20)
+label_2.place(x=300, y=20)
 
 # Текстовые поля
-year_1.place(x=200, y=150, width=50, height=20)
-year_2.place(x=450, y=150, width=50, height=20)
-month_1.place(x=200, y=200, width=50, height=20)
-month_2.place(x=450, y=200, width=50, height=20)
-day_1.place(x=200, y=250, width=50, height=20)
-day_2.place(x=450, y=250, width=50, height=20)
-time_1.place(x=200, y=300, width=50, height=20)
-time_2.place(x=450, y=300, width=50, height=20)
+year_1.place(x=120, y=80, width=50, height=20)
+year_2.place(x=350, y=80, width=50, height=20)
+month_1.place(x=120, y=120, width=50, height=20)
+month_2.place(x=350, y=120, width=50, height=20)
+day_1.place(x=120, y=160, width=50, height=20)
+day_2.place(x=350, y=160, width=50, height=20)
+time_1.place(x=120, y=200, width=50, height=20)
+time_2.place(x=350, y=200, width=50, height=20)
 
 # Метки
-lbl_data_1.place(x=150, y=150, width=50, height=20)
-lbl_data_2.place(x=400, y=150, width=50, height=20)
-lbl_month_1.place(x=150, y=200, width=50, height=20)
-lbl_month_2.place(x=400, y=200, width=50, height=20)
-lbl_day_1.place(x=150, y=250, width=50, height=20)
-lbl_day_2.place(x=400, y=250, width=50, height=20)
-lbl_time_1.place(x=150, y=300, width=50, height=20)
-lbl_time_2.place(x=400, y=300, width=50, height=20)
+lbl_data_1.place(x=70, y=80, width=50, height=20)
+lbl_data_2.place(x=300, y=80, width=50, height=20)
+lbl_month_1.place(x=70, y=120, width=50, height=20)
+lbl_month_2.place(x=300, y=120, width=50, height=20)
+lbl_day_1.place(x=70, y=160, width=50, height=20)
+lbl_day_2.place(x=300, y=160, width=50, height=20)
+lbl_time_1.place(x=70, y=200, width=50, height=20)
+lbl_time_2.place(x=300, y=200, width=50, height=20)
 
 # Кнопка 
-btn.place(x=400, y=400)
-btn_2.place(x=150, y=400)
+btn.place(x=300, y=250)
+btn_2.place(x=70, y=250)
 
 # Запуск приложения
 root.mainloop()
-
