@@ -1,13 +1,20 @@
-Приложение для учета температур 
+Graph Temperature 
 ==================
+<div>
+      <img src="https://img.shields.io/badge/Python-green?style=for-the-badge&logo=Python&logoColor=white"/>
+      <img src="https://img.shields.io/badge/Tkinter-yellow?style=for-the-badge&logo=Tkinter&logoColor=white"/>
+      <img src="https://img.shields.io/badge/matplotlib-blue?style=for-the-badge&logo=matplotlib&logoColor=white"/>
+</div>
 
-Сделано для учета температур котлов завода \
+------
+
+Сделано для учета температур нагревания котлов завода \
 Создано на языке <b>Python</b> \
 С использованием библеотек <b>Tkinter</b>, <b>Matplotlib</b>
 
 Логика:
 ------------------
-По дате вытаскивает из csv файла температуру \
+По дате берет из таблицы температуру \
 И превращает в график.
 
 Функционал:
